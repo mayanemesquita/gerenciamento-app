@@ -12,10 +12,11 @@
     <artifactId>gerenciamento-app</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>gerenciamento-app</name>
-    <description>Pequeno projeto para gerenciar lançamento de estoques</description>
+    <description>Pequeno projeto para gerenciar lançamento no estoque</description>
 
     <properties>
         <java.version>11</java.version>
+        <jdkVersion>11</jdkVersion>
     </properties>
 
     <dependencies>
@@ -77,6 +78,25 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>2.3.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
+            <version>1.1.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -87,5 +107,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
