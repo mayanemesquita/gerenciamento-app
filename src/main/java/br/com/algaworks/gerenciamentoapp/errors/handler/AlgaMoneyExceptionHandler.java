@@ -4,6 +4,7 @@ import br.com.algaworks.gerenciamentoapp.errors.exceptions.PessoaInexistenteOuIn
 import br.com.algaworks.gerenciamentoapp.errors.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @ControllerAdvice
 public class AlgaMoneyExceptionHandler extends ResponseEntityExceptionHandler {
+
     private final MessageSource messageSource;
 
     @Autowired
@@ -25,9 +27,9 @@ public class AlgaMoneyExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(PessoaInexistenteOuInativaException.class)
     public ResponseEntity<?> handlerPessoaInexistenteOuInativoException(PessoaInexistenteOuInativaException ex) {
-        String mensagemUsuario = "Pessoa Inexistente ou Invativa";
+        String mensagemUsuario = messageSource.getMessage("pessoa.inexistente.inativa", null, LocaleContextHolder.getLocale());
         String mensagemDesenvolvedor = ex.toString();
-        List<AlgamoneyHandler.Erro> erros = Collections.singletonList(new AlgamoneyHandler.Erro(mensagemUsuario, mensagemDesenvolvedor));
+        List<AlgamoneyHandlerResponse.Erro> erros = Collections.singletonList(new AlgamoneyHandlerResponse.Erro(mensagemUsuario, mensagemDesenvolvedor));
         return new ResponseEntity<>(erros, HttpStatus.BAD_REQUEST);
     }
 
@@ -36,7 +38,7 @@ public class AlgaMoneyExceptionHandler extends ResponseEntityExceptionHandler {
 
         String mensagemUsuario = ex.getMessage();
         String mensagemDesenvolvedor = ex.toString();
-        List<AlgamoneyHandler.Erro> erros = Arrays.asList(new AlgamoneyHandler.Erro(mensagemUsuario, mensagemDesenvolvedor));
+        List<AlgamoneyHandlerResponse.Erro> erros = Arrays.asList(new AlgamoneyHandlerResponse.Erro(mensagemUsuario, mensagemDesenvolvedor));
 
         return new ResponseEntity<>(erros, HttpStatus.NOT_FOUND);
     }

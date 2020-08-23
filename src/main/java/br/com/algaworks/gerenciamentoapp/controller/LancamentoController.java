@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -52,15 +51,18 @@ public class LancamentoController {
         return new ResponseEntity<>(lancamentoService.consultarResumoLancamento(descricao, dataInicial, dataFinal, page, size), HttpStatus.OK);
     }
 
-
     @PostMapping
     public ResponseEntity<Lancamento> salvarLancamento(@Valid @RequestBody Lancamento lancamento) {
         return new ResponseEntity<>(lancamentoService.cadastrar(lancamento), HttpStatus.CREATED);
     }
 
+    @PutMapping(path = "/{codigo}")
+    public ResponseEntity<Lancamento> alterarLancamento(@PathVariable Long codigo) {
+        return new ResponseEntity<>(lancamentoService.alterarLancamento(codigo), HttpStatus.OK);
+    }
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(path = "/{codigo}")
-    @PreAuthorize("hasAuthority('ROLE_REMOVER_LANCAMENTO')")
     public void deletarLancamento(@PathVariable Long codigo) {
         lancamentoService.deletarLancamento(codigo);
     }

@@ -1,12 +1,12 @@
 package br.com.algaworks.gerenciamentoapp.controller;
 
+import br.com.algaworks.gerenciamentoapp.integrations.cep.service.ViaCepService;
 import br.com.algaworks.gerenciamentoapp.model.entitys.Categoria;
 import br.com.algaworks.gerenciamentoapp.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,6 +17,8 @@ import java.net.URI;
 public class CategoriaController {
 
     private final CategoriaService categoriaService;
+    @Autowired
+    private ViaCepService viaCepService;
 
     @Autowired
     public CategoriaController(CategoriaService categoriaService) {
@@ -24,7 +26,6 @@ public class CategoriaController {
     }
 
     @GetMapping()
-    @PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA')")
     public ResponseEntity<?> categorias() {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Location", URI.create("localhost").toString());
@@ -33,13 +34,11 @@ public class CategoriaController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('ROLE_CADASTRAR_CATEGORIA')")
     public ResponseEntity<?> cadastrar(@Valid @RequestBody Categoria categoria) {
         return new ResponseEntity<>(categoriaService.cadastrar(categoria), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/{codigo}")
-    @PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA')")
     public ResponseEntity<?> categoria(@PathVariable Long codigo) {
         return new ResponseEntity<>(categoriaService.buscarPorId(codigo), HttpStatus.OK);
     }
@@ -48,5 +47,10 @@ public class CategoriaController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long codigo) {
         categoriaService.deletar(codigo);
+    }
+
+    @GetMapping(path = "buscar/{cep}")
+    public ResponseEntity<?> cep(@PathVariable String cep) {
+        return new ResponseEntity<>(viaCepService.buscarCep(cep), HttpStatus.OK);
     }
 }

@@ -19,12 +19,12 @@ import java.util.Collections;
 import java.util.List;
 
 @ControllerAdvice
-public class AlgamoneyHandler extends ResponseEntityExceptionHandler {
+public class AlgamoneyHandlerResponse extends ResponseEntityExceptionHandler {
 
     private final MessageSource messageSource;
 
     @Autowired
-    public AlgamoneyHandler(MessageSource messageSource) {
+    public AlgamoneyHandlerResponse(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
 
